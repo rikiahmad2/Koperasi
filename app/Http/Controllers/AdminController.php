@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Nasabah;
 use App\Models\User;
 
 use Illuminate\Http\Request;
@@ -36,7 +38,6 @@ class AdminController extends Controller
         $userM->password = $data['password'];
 
         $userM->save();
-
         return redirect()->back()->with('tambah', 'data berhasil di tambah');
     }
 
@@ -67,8 +68,70 @@ class AdminController extends Controller
             $userM->password = $data['password'];
         }
         $userM->save();
-
         return redirect()->back()->with('edit', 'data berhasil di delete');
         
+    }
+
+    public function manageNasabah()
+    {
+        $nasabahM = new Nasabah();
+        $userM = new User();
+        $data['data'] = $nasabahM->with('user')->get();
+        $data['pengelola'] = $userM->get();
+
+        return view('admin.managenasabah', $data);
+    }
+
+    public function tambahNasabah(Request $request)
+    {
+        $data =  $request->all();
+
+        $nasabahM = new Nasabah();
+        $nasabahM->name = $data['name'];
+        $nasabahM->noidentitas = $data['noidentitas'];
+        $nasabahM->ttl = $data['ttl'];
+        $nasabahM->jenis_kelamin = $data['jenis_kelamin'];
+        $nasabahM->agama = $data['agama'];
+        $nasabahM->pekerjaan = $data['pekerjaan'];
+        $nasabahM->pendidikan = $data['pendidikan'];
+        $nasabahM->no_hp = $data['no_hp'];
+        $nasabahM->alamat = $data['alamat'];
+        $nasabahM->kelurahan = $data['kelurahan'];
+        $nasabahM->kecamatan = $data['kecamatan'];
+        $nasabahM->provinsi = $data['provinsi'];
+        $nasabahM->user_id = $data['user_id'];
+
+        $nasabahM->save();
+        return redirect()->back()->with('tambah', 'data berhasil di tambah');
+    }
+
+    public function deleteNasabah($id)
+    {
+        $nasabahM = Nasabah::find($id);
+        $nasabahM->delete();
+        return redirect()->back()->with('delete', 'data berhasil di delete');
+    }
+
+    public function editNasabah(Request $request)
+    {
+        $data =  $request->all();
+
+        $nasabahM = Nasabah::find($request->id_nasabah);
+        $nasabahM->name = $data['name'];
+        $nasabahM->noidentitas = $data['noidentitas'];
+        $nasabahM->ttl = $data['ttl'];
+        $nasabahM->jenis_kelamin = $data['jenis_kelamin'];
+        $nasabahM->agama = $data['agama'];
+        $nasabahM->pekerjaan = $data['pekerjaan'];
+        $nasabahM->pendidikan = $data['pendidikan'];
+        $nasabahM->no_hp = $data['no_hp'];
+        $nasabahM->alamat = $data['alamat'];
+        $nasabahM->kelurahan = $data['kelurahan'];
+        $nasabahM->kecamatan = $data['kecamatan'];
+        $nasabahM->provinsi = $data['provinsi'];
+        $nasabahM->user_id = $data['user_id'];
+
+        $nasabahM->save();
+        return redirect()->back()->with('edit', 'data berhasil di delete');
     }
 }

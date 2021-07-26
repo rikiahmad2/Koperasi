@@ -105,7 +105,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="{{route('admin.index')}}" class="nav-link {{ Request::url() == route('admin.index') ? 'active' : '' }}">
+            <a href="{{route('manager.index')}}" class="nav-link {{ Request::url() == route('manager.index') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -113,7 +113,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('admin.manageAkun')}}" class="nav-link {{ Request::url() == route('admin.manageAkun') ? 'active' : '' }}">
+            <a href="{{route('manager.manageAkun')}}" class="nav-link {{ Request::url() == route('manager.manageAkun') ? 'active' : '' }}">
               <i class="nav-icon ion ion-person"></i>
               <p>
                 Manage Akun
@@ -121,7 +121,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{route('admin.manageNasabah')}}" class="nav-link {{ Request::url() == route('admin.manageNasabah') ? 'active' : '' }}">
+            <a href="{{route('manager.manageNasabah')}}" class="nav-link {{ Request::url() == route('manager.manageNasabah') ? 'active' : '' }}">
               <i class="nav-icon fas fa-handshake"></i>
               <p>
                 Manage Nasabah

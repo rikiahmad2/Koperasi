@@ -33,7 +33,7 @@ class AuthController extends Controller
             }
             else if(Auth::user()->level == 'manager')
             {
-                return 'ini manager';
+                return redirect()->route('manager.index');
             }
             else
             {
@@ -49,7 +49,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-
         return redirect()->route('auth.index');
     }
 }
