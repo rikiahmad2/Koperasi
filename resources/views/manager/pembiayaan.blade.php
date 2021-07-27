@@ -14,7 +14,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Manage Akun</h1>
+                        <h1>Manage Pembiayaan</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -32,12 +32,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Data Akun</h3>
+                            <h3 class="card-title"><i class="nav-icon fas fa-dollar-sign"></i> Data Pembiayaan</h3>
                             <div class="d-flex flex-row-reverse">
                                 <button type="button" class="btn btn-success" data-toggle="modal"
                                     data-target="#exampleModal">
                                     <i class="fas fa-plus"></i>
-                                    Tambah Akun
+                                    Tambah Pembiayaan
                                 </button>
                             </div>
                         </div>
@@ -48,52 +48,41 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Akun</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Pembiayaan</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('admin.tambahAkun') }}" method="POST">
+                                        <form action="{{ route('admin.tambahPembiayaan') }}" method="POST">
                                             @csrf
                                             <div class="form-group">
-                                                <label for="exampleFormControlInput1">NIP (Nomor Induk Pegawai)</label>
-                                                <input type="number" class="form-control" name="nip" id="nip2"
-                                                    placeholder="NIP" required />
+                                                <label for="exampleFormControlInput1">Nomor Rekening</label>
+                                                <input type="number" class="form-control" name="no_rekening" id="no_rekening2"
+                                                    placeholder="Nomor Rekening" required />
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Nama Lengkap</label>
-                                                <input type="text" class="form-control" name="name" id="name2"
-                                                    placeholder="Nama" required />
+                                                <label for="exampleFormControlSelect1">Total Pinjaman</label>
+                                                <input type="number" class="form-control" name="total_pinjaman" id="total_pinjaman2"
+                                                    placeholder="Total Pinjaman" required />
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Email</label>
-                                                <input type="email" class="form-control" name="email" id="email2"
-                                                    placeholder="Nama" required />
+                                                <label for="exampleFormControlSelect1">Jumlah Angsuran</label>
+                                                <input type="number" class="form-control" name="jumlah_angsuran" id="jumlah_angsuran2"
+                                                    placeholder="Jumlah Angsuran" required />
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Alamat</label>
-                                                <input type="text" class="form-control" name="alamat" id="alamat2"
-                                                    placeholder="alamat" required />
+                                                <label for="exampleFormControlSelect1">Margin Keuntungan/Bulan</label>
+                                                <input type="text" class="form-control" name="margin_keuntungan" id="margin_keuntungan2"
+                                                    placeholder="Margin Dalam %" required />
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Jenis Kelamin</label>
-                                                <select class="form-control" name="jenis_kelamin" id="jenis_kelamin2">
-                                                    <option value="L">Laki-laki</option>
-                                                    <option value="P">Perempuan</option>
+                                                <label for="exampleFormControlSelect1">Nasabah Penerima</label>
+                                                <select class="form-control" name="id_nasabah" id="id_nasabah2">
+                                                    @foreach ($nasabah as $row)
+                                                        <option value="{{$row->id_nasabah}}">{{$row->name}}</option>
+                                                    @endforeach
                                                 </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Level Akun</label>
-                                                <select class="form-control" name="level" id="level2">
-                                                    <option value="manager">Manager</option>
-                                                    <option value="pegawai">Pegawai</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Password</label>
-                                                <input type="password" class="form-control" name="password" id="password2"
-                                                    placeholder="Password" autocomplete="new-password" required />
                                             </div>
                                     </div>
                                     <div class="modal-footer">
@@ -109,28 +98,40 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>NIP</th>
-                                        <th>Nama</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>Level Akun</th>
-                                        <th>Tgl Buat</th>
+                                        <th>Kode Pembiayaan</th>
+                                        <th>Nomor Rekening</th>
+                                        <th>Nasabah</th>
+                                        <th>Total Pinjaman</th>
+                                        <th>Jumlah Angsuran</th>
+                                        <th>Margin Keuntungan</th>
+                                        <th>Sisa Angsuran</th>
+                                        <th>Cicilan Perbulan</th>
+                                        <th>Sisa Cicilan</th>
+                                        <th>Penanggung Jawab</th>
+                                        <th>NIP Pegawai</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($user as $row)
+                                    <?php $i = 0;?>
+                                    @foreach ($data as $row)
                                         <tr>
-                                            <td>{{ $row->nip }}</td>
-                                            <td>{{ $row->name }}
-                                            </td>
-                                            <td>{{ $row->jenis_kelamin }}</td>
-                                            <td>{{ $row->level }}</td>
-                                            <td>{{ $row->created_at }}</td>
+                                            <td>{{ $row->id_pembiayaan }}</td>
+                                            <td>{{ $row->no_rekening }}</td>
+                                            <td>{{ $row->nasabah->name }}</td>
+                                            <td>@currency($row->total_pinjaman)</td>
+                                            <td>{{ $row->jumlah_angsuran }}</td>
+                                            <td>{{ $row->margin_keuntungan }}%</td>
+                                            <td>{{ $row->sisa_angsuran }}</td>
+                                            <td>@currency($row->cicilan_perbulan)</td>
+                                            <td>@currency($row->sisa_cicilan)</td>
+                                            <td>{{$row->nasabah->user->name}}</td>
+                                            <td>{{$row->nasabah->user->nip}}</td>
                                             <td>
                                                 <!-- Button trigger modal -->
-                                                <button type="button" data-id="{{ $row->id }}"
-                                                    data-name="{{ $row->name }}" data-nip="{{ $row->nip }}" data-jenis_kelamin="{{ $row->jenis_kelamin }}"
-                                                    data-level="{{ $row->level }}" data-email="{{$row->email}}" data-alamat="{{$row->alamat}}" data-password="{{$row->password}}"
+                                                <button type="button" data-id_pembiayaan="{{ $row->id_pembiayaan }}"
+                                                    data-no_rekening="{{ $row->no_rekening }}" data-total_pinjaman="{{ $row->total_pinjaman }}" data-jumlah_angsuran="{{ $row->jumlah_angsuran }}"
+                                                    data-margin_keuntungan="{{ $row->margin_keuntungan }}" data-id_nasabah="{{ $row->id_nasabah }}" data-sisa_angsuran="{{$row->sisa_angsuran}}"
                                                     class="open-AddBookDialog btn btn-warning" data-toggle="modal"
                                                     data-target="#exampleModalEdit">
                                                     <i class="fas fa-edit"></i>
@@ -138,13 +139,14 @@
 
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="delete-AddBookDialog btn btn-danger"
-                                                    data-id2="{{ $row->id }}" data-name="{{ $row->name }}"
+                                                    data-id_pembiayaan="{{ $row->id_pembiayaan }}" data-name="{{ $row->nasabah->name }}"
                                                     data-toggle="modal" data-target="#exampleModalDelete">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
 
                                             </td>
                                         </tr>
+                                        <?php $i++; ?>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
@@ -188,48 +190,42 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{ route('admin.editAkun') }}" method="POST">
+                                    <form action="{{ route('admin.editPembiayaan') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">NIP (Nomor Induk Pegawai)</label>
-                                            <input type="number" class="form-control" name="nip" id="nip"
-                                                placeholder="NIP" required />
-                                            <input type="hidden" class="form-control" name="id" id="id"
-                                                placeholder="Id" required />
+                                            <label for="exampleFormControlInput1">Nomor Rekening</label>
+                                            <input type="number" class="form-control" name="no_rekening" id="no_rekening"
+                                                placeholder="Nomor Rekening" required />
+                                            <input type="hidden" class="form-control" name="id_pembiayaan" id="id_pembiayaan"
+                                                placeholder="Nomor Rekening" required />
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Nama Lengkap</label>
-                                            <input type="text" class="form-control" name="name" id="name"
-                                                placeholder="Nama" required />
+                                            <label for="exampleFormControlSelect1">Total Pinjaman</label>
+                                            <input type="number" class="form-control" name="total_pinjaman" id="total_pinjaman"
+                                                placeholder="Total Pinjaman" required />
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Email</label>
-                                            <input type="email" class="form-control" name="email" id="email"
-                                                placeholder="Nama" required />
+                                            <label for="exampleFormControlSelect1">Jumlah Angsuran</label>
+                                            <input type="number" class="form-control" name="jumlah_angsuran" id="jumlah_angsuran"
+                                                placeholder="Jumlah Angsuran" required />
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Alamat</label>
-                                            <input type="text" class="form-control" name="alamat" id="alamat"
-                                                placeholder="alamat" required />
+                                            <label for="exampleFormControlSelect1">Sisa Angsuran</label>
+                                            <input type="number" class="form-control" name="sisa_angsuran" id="sisa_angsuran"
+                                                placeholder="Jumlah Angsuran" required />
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Jenis Kelamin</label>
-                                            <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                                                <option value="L">Laki-laki</option>
-                                                <option value="P">Perempuan</option>
+                                            <label for="exampleFormControlSelect1">Margin Keuntungan/Bulan</label>
+                                            <input type="text" class="form-control" name="margin_keuntungan" id="margin_keuntungan"
+                                                placeholder="Margin Dalam %" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Nasabah Penerima</label>
+                                            <select class="form-control" name="id_nasabah" id="id_nasabah">
+                                                @foreach ($nasabah as $row)
+                                                    <option value="{{$row->id_nasabah}}">{{$row->name}}</option>
+                                                @endforeach
                                             </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Level Akun</label>
-                                            <select class="form-control" name="level" id="level">
-                                                <option value="manager">Manager</option>
-                                                <option value="pegawai">Pegawai</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Password</label>
-                                            <input type="password" class="form-control" name="password" id="password"
-                                                placeholder="Password" autocomplete="new-password" />
                                         </div>
                                 </div>
                                 <div class="modal-footer">
@@ -280,32 +276,32 @@
 
     <script>
         $(document).on("click", ".open-AddBookDialog", function() {
-            var id = $(this).data('id');
-            var name = $(this).data('name');
-            var nip = $(this).data('nip');
-            var level = $(this).data('level');
-            var email = $(this).data('email');
-            var alamat = $(this).data('alamat');
-            var jenis_kelamin = $(this).data('jenis_kelamin');
+            var id_pembiayaan = $(this).data('id_pembiayaan');
+            var no_rekening = $(this).data('no_rekening');
+            var total_pinjaman = $(this).data('total_pinjaman');
+            var jumlah_angsuran = $(this).data('jumlah_angsuran');
+            var sisa_angsuran = $(this).data('sisa_angsuran');
+            var margin_keuntungan = $(this).data('margin_keuntungan');
+            var id_nasabah = $(this).data('id_nasabah');
 
-            $(".modal-body #id").val(id);
-            $(".modal-body #name").val(name);
-            $(".modal-body #nip").val(nip);
-            $(".modal-body #level").val(level);
-            $(".modal-body #email").val(email);
-            $(".modal-body #jenis_kelamin").val(jenis_kelamin);
-            $(".modal-body #alamat").val(alamat);
+            $(".modal-body #id_pembiayaan").val(id_pembiayaan);
+            $(".modal-body #no_rekening").val(no_rekening);
+            $(".modal-body #total_pinjaman").val(total_pinjaman);
+            $(".modal-body #jumlah_angsuran").val(jumlah_angsuran);
+            $(".modal-body #sisa_angsuran").val(sisa_angsuran);
+            $(".modal-body #margin_keuntungan").val(margin_keuntungan);
+            $(".modal-body #id_nasabah").val(id_nasabah);
         });
 
         //MODAL 2
         $(document).on("click", ".delete-AddBookDialog", function() {
-            var id = $(this).data('id2');
+            var id_pembiayaan = $(this).data('id_pembiayaan');
             var name = $(this).data('name');
-            var url = "{{ url('/delete-akun') }}";
+            var url = "{{ url('/delete-pembiayan') }}";
 
             $("#exampleModalLabelDelete").text("Menghapus "+ name + "?");
             $("#delete").click(function() {
-                window.location.replace(url + '/' + id);
+                window.location.replace(url + '/' + id_pembiayaan);
             });
         });
     </script>

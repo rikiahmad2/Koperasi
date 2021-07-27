@@ -128,6 +128,22 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{route('admin.managePembiayaan')}}" class="nav-link {{ Request::url() == route('admin.managePembiayaan') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-dollar-sign"></i>
+              <p>
+                Pembiayaan
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('admin.managePembayaran')}}" class="nav-link {{ Request::url() == route('admin.managePembayaran') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-money-bill-wave"></i>
+              <p>
+                Pembayaran
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

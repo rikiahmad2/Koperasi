@@ -29,4 +29,9 @@ class Nasabah extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function pembiayaans()
+    {
+        return $this->hasMany('App\Models\PembiayaanModel', 'id_pembiayaan', 'id_nasabah');
+    }
 }

@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
 use App\Models\Nasabah;
+use App\Models\Pembayaran;
+use App\Models\PembiayaanModel;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -31,5 +33,24 @@ class ManagerController extends Controller
         $data['pengelola'] = $userM->get();
 
         return view('manager.managenasabah', $data);
+    }
+
+    public function managePembiayaan()
+    {
+        $pembiayaanM = new PembiayaanModel();
+        $nasabahM = new Nasabah();
+        $data['data'] = $pembiayaanM->with('nasabah', 'nasabah.user')->get();
+        $data['nasabah'] = $nasabahM->get();
+
+        return view('manager.pembiayaan', $data);
+    }
+
+    public function managePembayaran()
+    {
+        $nasabahM = new Nasabah();
+        $data['data'] = Pembayaran::with('pembiayaan', 'pembiayaan.nasabah.user')->get();
+        $data['nasabah'] = $nasabahM->get();
+
+        return view('manager.pembayaran', $data);
     }
 }
