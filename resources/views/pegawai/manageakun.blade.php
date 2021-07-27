@@ -1,4 +1,4 @@
-@extends('layouts.appmanager', ['title' => 'Dashboard'])
+@extends('layouts.apppegawai', ['title' => 'Dashboard'])
 
 @section('headassets')
     <!-- DataTables -->
@@ -14,7 +14,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Manage Pembayaran</h1>
+                        <h1>Manage Akun</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -32,12 +32,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"><i class="nav-icon fas fa-money-bill-wave"></i> Data Pembayaran</h3>
+                            <h3 class="card-title">Data Akun</h3>
                             <div class="d-flex flex-row-reverse">
                                 <button type="button" class="btn btn-success" data-toggle="modal"
                                     data-target="#exampleModal">
                                     <i class="fas fa-plus"></i>
-                                    Tambah Pembayaran
+                                    Tambah Akun
                                 </button>
                             </div>
                         </div>
@@ -48,28 +48,52 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Pembiayaan</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Akun</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{{ route('admin.tambahPembayaran') }}" method="POST">
+                                        <form action="{{ route('admin.tambahAkun') }}" method="POST">
                                             @csrf
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Kode Pembiayaan</label>
-                                                <input type="number" class="form-control" name="id_pembiayaan" id="id_pembiayaan2"
-                                                    placeholder="Kode Pembiayaan" required />
+                                                <label for="exampleFormControlInput1">NIP (Nomor Induk Pegawai)</label>
+                                                <input type="number" class="form-control" name="nip" id="nip2"
+                                                    placeholder="NIP" required />
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlInput1">Nama Penyetor</label>
-                                                <input type="text" class="form-control" name="nama_penyetor" id="nama_penyetor2"
-                                                    placeholder="Nama Penyetor" required />
+                                                <label for="exampleFormControlSelect1">Nama Lengkap</label>
+                                                <input type="text" class="form-control" name="name" id="name2"
+                                                    placeholder="Nama" required />
                                             </div>
                                             <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Angsuran Bulan</label>
-                                                <input type="text" class="form-control" name="angsuran_bulan" id="angsuran_bulan2"
-                                                    placeholder="Angsuran Bulan" required />
+                                                <label for="exampleFormControlSelect1">Email</label>
+                                                <input type="email" class="form-control" name="email" id="email2"
+                                                    placeholder="Nama" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Alamat</label>
+                                                <input type="text" class="form-control" name="alamat" id="alamat2"
+                                                    placeholder="alamat" required />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Jenis Kelamin</label>
+                                                <select class="form-control" name="jenis_kelamin" id="jenis_kelamin2">
+                                                    <option value="L">Laki-laki</option>
+                                                    <option value="P">Perempuan</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Level Akun</label>
+                                                <select class="form-control" name="level" id="level2">
+                                                    <option value="manager">Manager</option>
+                                                    <option value="pegawai">Pegawai</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Password</label>
+                                                <input type="password" class="form-control" name="password" id="password2"
+                                                    placeholder="Password" autocomplete="new-password" required />
                                             </div>
                                     </div>
                                     <div class="modal-footer">
@@ -85,36 +109,28 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Kode Pembayaran</th>
-                                        <th>Kode Pembiayaan</th>
-                                        <th>Nomor Rekening</th>
-                                        <th>Nama Nasabah</th>
-                                        <th>Nama Penyetor</th>
-                                        <th>Angsuran Ke</th>
-                                        <th>Angsuran Bulan</th>
-                                        <th>Total Bayar</th>
-                                        <th>Tanggal bayar</th>
+                                        <th>NIP</th>
+                                        <th>Nama</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Level Akun</th>
+                                        <th>Tgl Buat</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $i = 0;?>
-                                    @foreach ($data as $row)
+                                    @foreach ($user as $row)
                                         <tr>
-                                            <td>{{ $row->id_pembayaran }}</td>
-                                            <td>{{ $row->pembiayaan->id_pembiayaan }}</td>
-                                            <td>{{ $row->pembiayaan->no_rekening }}</td>
-                                            <td>{{ $row->pembiayaan->nasabah->name }}</td>
-                                            <td>{{ $row->nama_penyetor }}</td>
-                                            <td>{{ $row->angsuran_ke }}</td>
-                                            <td>{{ $row->angsuran_bulan }}</td>
-                                            <td>@currency($row->total_bayar)</td>
-                                            <td>{{$row->created_at}}</td>
+                                            <td>{{ $row->nip }}</td>
+                                            <td>{{ $row->name }}
+                                            </td>
+                                            <td>{{ $row->jenis_kelamin }}</td>
+                                            <td>{{ $row->level }}</td>
+                                            <td>{{ $row->created_at }}</td>
                                             <td>
                                                 <!-- Button trigger modal -->
-                                                <button type="button"
-                                                    data-id_pembayaran="{{ $row->id_pembayaran }}" data-id_pembiayaan="{{$row->id_pembiayaan}}"
-                                                    data-nama_penyetor="{{ $row->nama_penyetor }}" data-angsuran_bulan="{{$row->angsuran_bulan}}"
+                                                <button type="button" data-id="{{ $row->id }}"
+                                                    data-name="{{ $row->name }}" data-nip="{{ $row->nip }}" data-jenis_kelamin="{{ $row->jenis_kelamin }}"
+                                                    data-level="{{ $row->level }}" data-email="{{$row->email}}" data-alamat="{{$row->alamat}}" data-password="{{$row->password}}"
                                                     class="open-AddBookDialog btn btn-warning" data-toggle="modal"
                                                     data-target="#exampleModalEdit">
                                                     <i class="fas fa-edit"></i>
@@ -122,19 +138,13 @@
 
                                                 <!-- Button trigger modal -->
                                                 <button type="button" class="delete-AddBookDialog btn btn-danger"
-                                                    data-id_pembayaran="{{ $row->id_pembayaran }}" data-id_pembiayaan="{{$row->id_pembiayaan}}"
+                                                    data-id2="{{ $row->id }}" data-name="{{ $row->name }}"
                                                     data-toggle="modal" data-target="#exampleModalDelete">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
 
-                                                <!-- Button trigger modal -->
-                                                <a href="{{route('admin.viewPembayaran', ["id" => $row->id_pembayaran])}}" class="btn btn-primary" target="_blank">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-
                                             </td>
                                         </tr>
-                                        <?php $i++; ?>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
@@ -178,24 +188,48 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{ route('admin.editPembayaran') }}" method="POST">
+                                    <form action="{{ route('admin.editAkun') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Kode Pembiayaan</label>
-                                            <input type="number" class="form-control" name="id_pembiayaan" id="id_pembiayaan"
-                                                placeholder="Kode Pembiayaan" required />
-                                            <input type="hidden" class="form-control" name="id_pembayaran" id="id_pembayaran"
-                                                placeholder="Kode Pembiayaan" required />                                               
+                                            <label for="exampleFormControlInput1">NIP (Nomor Induk Pegawai)</label>
+                                            <input type="number" class="form-control" name="nip" id="nip"
+                                                placeholder="NIP" required />
+                                            <input type="hidden" class="form-control" name="id" id="id"
+                                                placeholder="Id" required />
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">Nama Penyetor</label>
-                                            <input type="text" class="form-control" name="nama_penyetor" id="nama_penyetor"
-                                                placeholder="Nama Penyetor" required />
+                                            <label for="exampleFormControlSelect1">Nama Lengkap</label>
+                                            <input type="text" class="form-control" name="name" id="name"
+                                                placeholder="Nama" required />
                                         </div>
                                         <div class="form-group">
-                                            <label for="exampleFormControlSelect1">Angsuran Bulan</label>
-                                            <input type="text" class="form-control" name="angsuran_bulan" id="angsuran_bulan"
-                                                placeholder="Angsuran Bulan" required />
+                                            <label for="exampleFormControlSelect1">Email</label>
+                                            <input type="email" class="form-control" name="email" id="email"
+                                                placeholder="Nama" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Alamat</label>
+                                            <input type="text" class="form-control" name="alamat" id="alamat"
+                                                placeholder="alamat" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Jenis Kelamin</label>
+                                            <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
+                                                <option value="L">Laki-laki</option>
+                                                <option value="P">Perempuan</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Level Akun</label>
+                                            <select class="form-control" name="level" id="level">
+                                                <option value="manager">Manager</option>
+                                                <option value="pegawai">Pegawai</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Password</label>
+                                            <input type="password" class="form-control" name="password" id="password"
+                                                placeholder="Password" autocomplete="new-password" />
                                         </div>
                                 </div>
                                 <div class="modal-footer">
@@ -246,26 +280,32 @@
 
     <script>
         $(document).on("click", ".open-AddBookDialog", function() {
-            var id_pembiayaan = $(this).data('id_pembiayaan');
-            var id_pembayaran = $(this).data('id_pembayaran');
-            var nama_penyetor = $(this).data('nama_penyetor');
-            var angsuran_bulan = $(this).data('angsuran_bulan');
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            var nip = $(this).data('nip');
+            var level = $(this).data('level');
+            var email = $(this).data('email');
+            var alamat = $(this).data('alamat');
+            var jenis_kelamin = $(this).data('jenis_kelamin');
 
-            $(".modal-body #id_pembiayaan").val(id_pembiayaan);
-            $(".modal-body #id_pembayaran").val(id_pembayaran);
-            $(".modal-body #nama_penyetor").val(nama_penyetor);
-            $(".modal-body #angsuran_bulan").val(angsuran_bulan);
+            $(".modal-body #id").val(id);
+            $(".modal-body #name").val(name);
+            $(".modal-body #nip").val(nip);
+            $(".modal-body #level").val(level);
+            $(".modal-body #email").val(email);
+            $(".modal-body #jenis_kelamin").val(jenis_kelamin);
+            $(".modal-body #alamat").val(alamat);
         });
 
         //MODAL 2
         $(document).on("click", ".delete-AddBookDialog", function() {
-            var id_pembayaran = $(this).data('id_pembayaran');
-            var id_pembiayaan = $(this).data('id_pembiayaan');
-            var url = "{{ url('/delete-pembayaran') }}";
+            var id = $(this).data('id2');
+            var name = $(this).data('name');
+            var url = "{{ url('/delete-akun') }}";
 
-            $("#exampleModalLabelDelete").text("Menghapus Pembayaran "+ id_pembayaran + " ?");
+            $("#exampleModalLabelDelete").text("Menghapus "+ name + "?");
             $("#delete").click(function() {
-                window.location.replace(url + '/' + id_pembayaran + '/'+ id_pembiayaan);
+                window.location.replace(url + '/' + id);
             });
         });
     </script>
@@ -302,18 +342,6 @@
                     title: 'Data Di Edit',
                     text: 'Data Berhasil Di Edit',
                     icon: 'success',
-                    confirmButtonText: 'Mengerti'
-                })
-            });
-        </script>
-    @endif
-    @if (session('gagal'))
-        <script>
-            $(document).ready(function() {
-                Swal.fire({
-                    title: 'Id Tidak Valid',
-                    text: 'Id Pembiayaan Tidak Ditemukan',
-                    icon: 'error',
                     confirmButtonText: 'Mengerti'
                 })
             });

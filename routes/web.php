@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\PegawaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,13 @@ Route::get('/manager-manage-nasabah', [ManagerController::class, 'manageNasabah'
 Route::get('/manager-manage-pembiayaan', [ManagerController::class, 'managePembiayaan'])->name('manager.managePembiayaan');
 Route::get('/manager-manage-pembayaran', [ManagerController::class, 'managePembayaran'])->name('manager.managePembayaran');
 
+//Pegawai
+Route::get('/pegawai-dashboard', [PegawaiController::class, 'index'])->name('pegawai.index');
+Route::get('/pegawai-manage-nasabah', [PegawaiController::class, 'manageNasabah'])->name('pegawai.manageNasabah');
+Route::get('/pegawai-manage-nasabah', [PegawaiController::class, 'manageNasabah'])->name('pegawai.manageNasabah');
+Route::get('/pegawai-manage-pembiayaan', [PegawaiController::class, 'managePembiayaan'])->name('pegawai.managePembiayaan');
+Route::get('/pegawai-manage-pembayaran', [PegawaiController::class, 'managePembayaran'])->name('pegawai.managePembayaran');
+
 //CRUD AKUN
 Route::post('/tambah-akun', [AdminController::class, 'tambahAkun'])->name('admin.tambahAkun');
 Route::post('/edit-akun', [AdminController::class, 'editAkun'])->name('admin.editAkun');
@@ -54,4 +62,5 @@ Route::get('/delete-pembiayan/{id}', [AdminController::class, 'deletePembiayaan'
 Route::post('/tambah-pembayaran', [AdminController::class, 'tambahPembayaran'])->name('admin.tambahPembayaran');
 Route::post('/edit-pembayaran', [AdminController::class, 'editPembayaran'])->name('admin.editPembayaran');
 Route::get('/delete-pembayaran/{id}/{id_pembiayaan}', [AdminController::class, 'deletePembayaran'])->name('admin.deletePembayaran');
+Route::get('/view-pembayaran/{id}', [AdminController::class, 'viewPembayaran'])->name('admin.viewPembayaran');
 

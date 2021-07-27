@@ -1,4 +1,4 @@
-@extends('layouts.appmanager', ['title' => 'Dashboard'])
+@extends('layouts.apppegawai', ['title' => 'Dashboard'])
 
 @section('headassets')
     <!-- DataTables -->

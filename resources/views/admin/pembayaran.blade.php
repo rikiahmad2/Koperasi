@@ -127,6 +127,11 @@
                                                     <i class="fas fa-trash"></i>
                                                 </button>
 
+                                                <!-- Button trigger modal -->
+                                                <a href="{{route('admin.viewPembayaran', ["id" => $row->id_pembayaran])}}" class="btn btn-primary" target="_blank">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+
                                             </td>
                                         </tr>
                                         <?php $i++; ?>

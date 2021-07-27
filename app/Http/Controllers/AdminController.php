@@ -6,7 +6,8 @@ use App\Models\Nasabah;
 use App\Models\Pembayaran;
 use App\Models\PembiayaanModel;
 use App\Models\User;
-
+use Codedge\Fpdf\Fpdf\Fpdf;
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -278,5 +279,55 @@ class AdminController extends Controller
         $pembiayaanM->save();
 
         return redirect()->back()->with('edit', 'data berhasil di delete');
+    }
+
+    public function viewPembayaran($id)
+    {
+        $this->fpdf = new Fpdf;
+        $fpdf = $this->fpdf;
+        $pembayaranM = Pembayaran::with('pembiayaan', 'pembiayaan.nasabah.user')->where('id_pembayaran', '=', $id)->first();
+
+        header('Content-type: application/pdf');
+        $fpdf->AddPage("L", 'A4');
+        $fpdf->Image('assets/images/polos.jpg',0,0,297,210,'JPG');
+        $fpdf->Image('assets/images/sisPastel.png',30,20,30,30,'PNG');
+        $fpdf->Image('assets/images/ttd.png',110,110,70,70,'PNG');
+        $fpdf->SetFont('Arial','B','14');
+        
+        $fpdf->Text(30, 55, "Koperasi Nurul");
+        $fpdf->SetFont('Arial','B','24');
+
+        $fpdf->SetTextColor(87, 143, 102);
+        $fpdf->Text(90, 35, "Bukti Pembayaran Angsuran");
+        $fpdf->SetFont('Arial','B','16');
+        $fpdf->SetTextColor(0,0,0);
+        $fpdf->Text(125, 45, "Koperasi Nurul");
+        $fpdf->SetFont('Arial','B','12');
+
+        //SET LINE
+        $fpdf->Text(130, 65, "Nama Nasabah :");
+        $fpdf->SetLineWidth(0.8);
+        $fpdf->Line(90, 85, 210-5, 85);
+        $fpdf->setXY(90,75);
+        $fpdf->SetFont('Arial','B','16');
+        $fpdf->Cell(112,10,$pembayaranM->pembiayaan->nasabah->name,0,1,'C');
+        
+        //SEBAGAI PESERTA SIS
+        $fpdf->SetFont('Arial','B','14');
+        $fpdf->Text(97, 95, "Angsuran Bulan ".$pembayaranM->angsuran_bulan." (Angsuran ke- ".$pembayaranM->angsuran_ke.")");
+        $fpdf->SetFont('Arial','','12');
+        $fpdf->Text(100, 105, "Bukti Ini Dinyatakan Sah Sebagai Tanda Pembayaran");
+        $fpdf->Text(112, 110, "Tanggal Bayar : ".$pembayaranM->created_at);
+        $fpdf->SetFont('Arial','B','16');
+        $fpdf->setXY(168,113.5);
+        $fpdf->SetTextColor(87, 143, 102);
+        $fpdf->Text(123, 120, "Tanda Tangan :");
+
+        $fpdf->SetFont('Arial','B','13');
+        $fpdf->Text(132, 173, "Nurul S.pd");
+        $fpdf->SetTextColor(0,0,0);
+        $fpdf->Text(117, 179, "Founder Koperasi Nurul");
+        $this->fpdf->Output();
+        exit;
     }
 }

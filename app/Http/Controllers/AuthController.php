@@ -37,7 +37,7 @@ class AuthController extends Controller
             }
             else
             {
-                return 'ini pegawai';
+                return redirect()->route('pegawai.index');
             }
         } 
         else 
