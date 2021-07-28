@@ -40,15 +40,22 @@
                                     Tambah Pembayaran
                                 </button>
                             </div>
+                            <div class="d-flex flex-row-reverse" style="padding-top: 5px">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#exampleModalPrint">
+                                    <i class="fas fa-print"></i>
+                                    Print Laporan
+                                </button>
+                            </div>
                         </div>
 
-                        <!-- Modal -->
+                        <!-- Modal Tambah -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Pembiayaan</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Tambah Pembayaran</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -70,6 +77,34 @@
                                                 <label for="exampleFormControlSelect1">Angsuran Bulan</label>
                                                 <input type="text" class="form-control" name="angsuran_bulan" id="angsuran_bulan2"
                                                     placeholder="Angsuran Bulan" required />
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Print -->
+                        <div class="modal fade" id="exampleModalPrint" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Print Laporan</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ route('admin.laporanPembayaran') }}" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Kode Pembiayaan</label>
+                                                <input type="number" class="form-control" name="id_pembiayaan" id="id_pembiayaan2"
+                                                    placeholder="Kode Pembiayaan" required />
                                             </div>
                                     </div>
                                     <div class="modal-footer">

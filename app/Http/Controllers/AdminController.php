@@ -290,18 +290,18 @@ class AdminController extends Controller
         header('Content-type: application/pdf');
         $fpdf->AddPage("L", 'A4');
         $fpdf->Image('assets/images/polos.jpg',0,0,297,210,'JPG');
-        $fpdf->Image('assets/images/sisPastel.png',30,20,30,30,'PNG');
-        $fpdf->Image('assets/images/ttd.png',110,110,70,70,'PNG');
+        $fpdf->Image('assets/images/sisPastel.png',32,20,30,30,'PNG');
+        $fpdf->Image('assets/images/ttd.png',110,115,70,70,'PNG');
         $fpdf->SetFont('Arial','B','14');
         
-        $fpdf->Text(30, 55, "Koperasi Nurul");
+        $fpdf->Text(30, 55, "Inkopsyah BMT");
         $fpdf->SetFont('Arial','B','24');
 
         $fpdf->SetTextColor(87, 143, 102);
         $fpdf->Text(90, 35, "Bukti Pembayaran Angsuran");
         $fpdf->SetFont('Arial','B','16');
         $fpdf->SetTextColor(0,0,0);
-        $fpdf->Text(125, 45, "Koperasi Nurul");
+        $fpdf->Text(125, 45, "Inkopsyah BMT");
         $fpdf->SetFont('Arial','B','12');
 
         //SET LINE
@@ -318,15 +318,83 @@ class AdminController extends Controller
         $fpdf->SetFont('Arial','','12');
         $fpdf->Text(100, 105, "Bukti Ini Dinyatakan Sah Sebagai Tanda Pembayaran");
         $fpdf->Text(112, 110, "Tanggal Bayar : ".$pembayaranM->created_at);
+        $fpdf->Text(122, 115, "Jumlah Bayar : ".$pembayaranM->total_bayar);
         $fpdf->SetFont('Arial','B','16');
         $fpdf->setXY(168,113.5);
         $fpdf->SetTextColor(87, 143, 102);
-        $fpdf->Text(123, 120, "Tanda Tangan :");
+        $fpdf->Text(123, 125, "Tanda Tangan :");
 
         $fpdf->SetFont('Arial','B','13');
-        $fpdf->Text(132, 173, "Nurul S.pd");
+        $fpdf->Text(120, 178, "Nurul Hakim Dwiyanti");
         $fpdf->SetTextColor(0,0,0);
-        $fpdf->Text(117, 179, "Founder Koperasi Nurul");
+        $fpdf->Text(117, 184, "Founder Inkopsyah BMT");
+        $this->fpdf->Output();
+        exit;
+    }
+
+    public function laporanPembayaran(Request $request)
+    {
+        $id_pembiayaan = $request->input('id_pembiayaan');
+        $data = Pembayaran::with('pembiayaan', 'pembiayaan.nasabah.user')->where('id_pembiayaan', '=', $id_pembiayaan)->get();
+        if($data->count() == 0)
+        {
+            return redirect()->back()->with('gagal', 'id tidak ditemukan');
+        }
+
+        $this->fpdf = new Fpdf;
+        $fpdf = $this->fpdf;
+
+        header('Content-type: application/pdf');
+        header('Content-type: application/pdf');
+        $fpdf->AddPage("P", 'A4');
+
+        //HEADER
+        $fpdf->SetFont('Arial','B','10');
+        $fpdf->Text(10, 15, "Kode Nasabah  :");
+        $fpdf->Text(10, 20, "Nama Nasabah  :");
+        $fpdf->Text(10, 25, "Kode Pembiayaan  :");
+        $fpdf->Text(10, 30, "Sisa Cicilan  :");
+        $fpdf->Text(10, 35, "Jumlah Angsuran  :");
+        $fpdf->SetFont('Arial','','11');
+        $fpdf->setY(11.5);
+        $fpdf->setX(45);
+        $fpdf->Cell(80,5,$data[0]->pembiayaan->nasabah->id_nasabah,0, 1, 'L');
+        $fpdf->setY(16.5);
+        $fpdf->setX(45);
+        $fpdf->Cell(80,5,$data[0]->pembiayaan->nasabah->name,0, 1, 'L');
+        $fpdf->setY(21.5);
+        $fpdf->setX(45);
+        $fpdf->Cell(80,5,$data[0]->pembiayaan->id_pembiayaan,0, 1, 'L');
+        $fpdf->setY(26.5);
+        $fpdf->setX(45);
+        $fpdf->Cell(80,5,$data[0]->pembiayaan->sisa_cicilan,0, 1, 'L');
+        $fpdf->setY(31.5);
+        $fpdf->setX(45);
+        $fpdf->Cell(80,5,$data[0]->pembiayaan->jumlah_angsuran,0, 1, 'L');
+
+         // Membuat tabel
+        $fpdf->Cell(10,17,'',0,1);
+        $fpdf->SetFont('Arial','B',8);
+        $fpdf->setX(30);
+        $fpdf->Cell(10,6,'NO.',1,0, 'C');
+        $fpdf->Cell(40,6,'Nama Penyetor',1,0, 'C');
+        $fpdf->Cell(30,6,'Total Bayar',1,0, 'C');
+        $fpdf->Cell(25,6,'Angsuran ke',1,0, 'C');
+        $fpdf->Cell(50,6,'Tanggal Bayar',1,1, 'C');
+        $fpdf->SetFont('Arial','',10);
+
+        $i=1;
+        foreach($data as $row){
+            $fpdf->setX(30);
+            $fpdf->Cell(10,20.5,$i.'.',1,0,'C');
+            $fpdf->Cell(40,20.5,$row->nama_penyetor,1,0, 'C');
+            $fpdf->Cell(30,20.5,$row->total_bayar,1,0 ,'C');
+            $fpdf->Cell(25,20.5,$row->angsuran_ke,1,0, 'C');
+            $fpdf->Cell(50,20.5,$row->created_at,1,1,'C');
+            $i++;
+        }
+
+        $fpdf->SetTitle('Laporan Pembayaran '.$data[0]->pembiayaan->nasabah->name);
         $this->fpdf->Output();
         exit;
     }

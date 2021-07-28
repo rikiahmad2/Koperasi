@@ -23,7 +23,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>Nurul </b>Koperasi</a>
+            <a href="../../index2.html"><b>INKOPSYAH </b>BMT</a>
         </div>
         <!-- /.login-logo -->
         <div class="card">

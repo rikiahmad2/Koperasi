@@ -63,4 +63,5 @@ Route::post('/tambah-pembayaran', [AdminController::class, 'tambahPembayaran'])-
 Route::post('/edit-pembayaran', [AdminController::class, 'editPembayaran'])->name('admin.editPembayaran');
 Route::get('/delete-pembayaran/{id}/{id_pembiayaan}', [AdminController::class, 'deletePembayaran'])->name('admin.deletePembayaran');
 Route::get('/view-pembayaran/{id}', [AdminController::class, 'viewPembayaran'])->name('admin.viewPembayaran');
+Route::post('/cetak-laporan-pembayaran', [AdminController::class, 'laporanPembayaran'])->name('admin.laporanPembayaran');
 
