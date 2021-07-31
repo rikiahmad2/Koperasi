@@ -53,10 +53,11 @@ Route::post('/tambah-nasabah', [AdminController::class, 'tambahNasabah'])->name(
 Route::post('/edit-nasabah', [AdminController::class, 'editNasabah'])->name('admin.editNasabah');
 Route::get('/delete-nasabah/{id}', [AdminController::class, 'deleteNasabah'])->name('admin.deleteNasabah');
 
-//CRUD AKUN
+//CRUD Pembiayaan
 Route::post('/tambah-pembiayan', [AdminController::class, 'tambahPembiayaan'])->name('admin.tambahPembiayaan');
 Route::post('/edit-pembiayan', [AdminController::class, 'editPembiayaan'])->name('admin.editPembiayaan');
 Route::get('/delete-pembiayan/{id}', [AdminController::class, 'deletePembiayaan'])->name('admin.deletePembiayaan');
+Route::get('/jurnal-pembiayan', [AdminController::class, 'jurnalPembiayaan'])->name('admin.jurnalPembiayaan');
 
 //CRUD Pembayaran
 Route::post('/tambah-pembayaran', [AdminController::class, 'tambahPembayaran'])->name('admin.tambahPembayaran');

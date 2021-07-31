@@ -144,6 +144,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{route('admin.jurnalPembiayaan')}}" class="nav-link {{ Request::url() == route('admin.jurnalPembiayaan') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Jurnal Pembiayaan
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

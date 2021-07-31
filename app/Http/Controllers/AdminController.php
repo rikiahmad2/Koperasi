@@ -398,4 +398,87 @@ class AdminController extends Controller
         $this->fpdf->Output();
         exit;
     }
+
+    public function jurnalPembiayaan(Request $request)
+    {
+        $current_date = \Carbon\Carbon::now();
+        $pembiayaanM = new PembiayaanModel();
+
+        $data = $pembiayaanM->get();
+        $data2 = Pembayaran::with('pembiayaan', 'pembiayaan.nasabah.user')->get();
+        if($data->count() == 0)
+        {
+            return redirect()->back()->with('gagal', 'id tidak ditemukan');
+        }
+
+        $this->fpdf = new Fpdf;
+        $fpdf = $this->fpdf;
+
+        header('Content-type: application/pdf');
+        header('Content-type: application/pdf');
+        $fpdf->AddPage("P", 'A4');
+
+        //HEADER
+        $fpdf->SetFont('Arial','B','12');
+        $fpdf->setY(21.5);
+        $fpdf->setX(0);
+        $fpdf->Cell(210,5,"DATA JURNAL INKOPSYIAH BMT",0, 1, 'C');
+        $fpdf->SetFont('Arial','','11');
+        $fpdf->setY(31.5);
+        $fpdf->setX(0);
+        $fpdf->Cell(210,5,"Laporan Data Jurnal Periode ".$data[0]->created_at.' - '.$current_date,0, 1, 'C');
+
+         // Membuat tabel
+        $fpdf->Cell(10,17,'',0,1);
+        $fpdf->SetFont('Arial','B',8);
+        $fpdf->setX(30);
+        $fpdf->Cell(10,6,'NO.',1,0, 'C');
+        $fpdf->Cell(40,6,'Tanggal',1,0, 'C');
+        $fpdf->Cell(30,6,'Debit',1,0, 'C');
+        $fpdf->Cell(25,6,'Kredit',1,0, 'C');
+        $fpdf->Cell(50,6,'Keterangan',1,1, 'C');
+        $fpdf->SetFont('Arial','',10);
+
+
+        //TOTAL KREDIT
+        $i=1;
+        $total_kredit = 0;
+        foreach($data as $row){
+            $total_kredit += $row->total_pinjaman;
+        }
+        $fpdf->setX(30);
+        $fpdf->Cell(10,20.5,$i.'.',1,0,'C');
+        $fpdf->Cell(40,20.5,$data[0]->created_at,1,0, 'C');
+        $fpdf->Cell(30,20.5,0,1,0 ,'C');
+        $fpdf->Cell(25,20.5,$total_kredit,1,0, 'C');
+        $fpdf->Cell(50,20.5,'Pembiayaan Mudharabah',1,1,'C');
+        $i++;
+
+        //DEBIT LIST
+        $total_debit = 0;
+        foreach($data2 as $row){
+            $fpdf->setX(30);
+            $fpdf->Cell(10,20.5,$i.'.',1,0,'C');
+            $fpdf->Cell(40,20.5,$row->created_at,1,0, 'C');
+            $fpdf->Cell(30,20.5,ceil($row->pembiayaan->total_pinjaman/$row->pembiayaan->jumlah_angsuran),1,0 ,'C');
+            $fpdf->Cell(25,20.5,0,1,0, 'C');
+            $fpdf->Cell(50,20.5,'Angsuran Mudharabah',1,1,'C');
+            $i++;
+
+            $total_debit += $row->pembiayaan->total_pinjaman/$row->pembiayaan->jumlah_angsuran; 
+        }
+
+        $sisa_kredit = $total_kredit - $total_debit;
+        $fpdf->setX(30);
+        $fpdf->Cell(10,20.5,$i.'.',1,0,'C');
+        $fpdf->Cell(40,20.5,$current_date,1,0, 'C');
+        $fpdf->Cell(30,20.5,0,1,0 ,'C');
+        $fpdf->Cell(25,20.5,floor($sisa_kredit),1,0, 'C');
+        $fpdf->Cell(50,20.5,'Sisa Pembiayaan Mudharabah',1,1,'C');
+        $i++;
+
+        $fpdf->SetTitle('Jurnal Pembiayaan');
+        $this->fpdf->Output();
+        exit;
+    }
 }
